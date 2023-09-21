@@ -7,3 +7,6 @@ function addClassToElement() {
 }
 
 addButton.addEventListener('click', addClassToElement);
+
+
+

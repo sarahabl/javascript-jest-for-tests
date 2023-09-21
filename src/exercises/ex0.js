@@ -1,20 +1,9 @@
-function fizz_buzz(numbers) {
-    let result = []
-    
-    numbers.forEach(number => {
-        if (number % 15 === 0) {
-            result.push('fizzbuzz')
-        } else if (number % 3 === 0) {
-            result.push('fizz')
-        } else if (number % 5 === 0) {
-            result.push('buzz')
-        } else {
-            result.push(number)
-        }
-    });
-        
-    
-    return result.join(', ')
+function fizz_buzz(string, substring) {
+    if(string.includes(substring) == true) {
+        return true;
+    }else{
+        return false;
+    }
 }
-
+console.log("aaa");
 module.exports = fizz_buzz;

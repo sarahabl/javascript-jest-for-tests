@@ -1,5 +1,3 @@
-// ex3.test.js
-
 const fs = require('fs'); // Module Node.js pour interagir avec le système de fichiers
 const path = require('path'); // Module Node.js pour manipuler les chemins de fichiers
 const { JSDOM } = require('jsdom'); // Module JSDOM pour simuler un environnement DOM dans Node.js

@@ -7,7 +7,4 @@ describe("FizzBuzz", () => {
   test('[3] should result in "fizz"', () => {
     expect(fizz_buzz("aaa", "b")).toBe(false);
   });
-
-   
-
 });

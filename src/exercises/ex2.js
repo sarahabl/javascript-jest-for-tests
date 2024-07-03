@@ -1,4 +1,3 @@
-// ex2.js
 const showMessage = () => {
   const message = document.getElementById('message');
   if (message) {

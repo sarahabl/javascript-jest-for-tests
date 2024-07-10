@@ -1,12 +1,12 @@
 const api_key = '08cb792ca8906ae401dad848ccb6410d';
-const latitude = 48.11;
-const longitude = -1.67;
+const latitude = -18.8792;
+const longitude = 47.5079;
 const api_url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${api_key}`;
 
 const res = document.getElementById('paragraph');
 const eraser = document.getElementById('remove-paragraph-button');
 
-// la fonction doit être asynchrone pour attendre la réponse de l'API
+// La fonction fetchData
 async function fetchData() {
   try {
     // on récupère la réponse
@@ -32,7 +32,7 @@ const displayData = () => {
     // on attend qu'elles arrivent
     .then((temperature) => {
       if (temperature !== undefined) {
-        res.textContent = `La température actuelle à Rennes est de ${temperature.toFixed(2)} °C.`;
+        res.textContent = `La température actuelle à Tananarive est de ${temperature.toFixed(2)} °C.`;
       } else {
         console.error('La température est indéfinie.');
       }

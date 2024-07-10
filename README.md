@@ -9,7 +9,7 @@ Follow these instructions to validate the exercises.
 
 - Exercise0: Create simple functions and write tests to validate them.
 - Exercise1 to Exercise5:  Follow instructions below.
-- Exercise6: Create more complex functinos and write tests to validate them.
+- Exercise6: Create more complex functions and write tests to validate them.
 
 ## Prerequisites
 - Node.js and npm should be installed on your machine.

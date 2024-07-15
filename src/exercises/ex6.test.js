@@ -1,5 +1,6 @@
 const { findMax, removeDuplicates, includesValue, sortArray } = require('./ex6');
 
+// Tester la fonction findMax
 describe('findMax', () => {
 
 	test('should return the maximum value in an array of numbers', () => {
@@ -9,6 +10,7 @@ describe('findMax', () => {
 	});
 });
 
+// Tester la fonction removeDuplicates
 describe('unduplicate', () => {
 
 	test('should return an array with one value of each', () => {
@@ -20,6 +22,7 @@ describe('unduplicate', () => {
 	});
 });
 
+// Tester la fonction includesValue
 describe('includesValue', () => {
 	test('should return true if the array includes the value', () => {
 		const array = [1, 2, 3, 4, 5];
@@ -29,6 +32,7 @@ describe('includesValue', () => {
 	});
 });
 
+// Tester la fonction sortArray
 describe('sortArray', () => {
 	test('should return a sorted array in ascending order', () => {
 		const array = [5, 3, 8, 1, 2];

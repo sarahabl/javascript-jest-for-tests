@@ -1,43 +1,49 @@
-// ex4.test.js
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import { fetchData } from './ex4';
 
-const fetchData = require('./ex4');
+describe('fetchData', () => {
+  let mock;
 
-// Mock fetch pour simuler la réponse de l'API
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    json: () =>
-      Promise.resolve({
-        main: {
-          temp: 289 // Simuler une température en Kelvin (par exemple 289K = 16°C)
-        }
-      })
-  })
-);
-
-describe('fetchData function', () => {
-  it('should fetch data and return temperature in Celsius', async () => {
-    const temperature = await fetchData();
-
-    expect(typeof temperature).toBe('number');
-    expect(temperature).toBeCloseTo(16, 1); // Vérifier que la température est proche de 16°C
-    expect(fetch).toHaveBeenCalledWith(api_url); // Vérifier que fetch a été appelé avec l'URL correcte
+  beforeAll(() => {
+    mock = new MockAdapter(axios);
   });
 
-  it('should throw an error when response data is missing', async () => {
-    // Mock fetch pour simuler une réponse sans jsonData.main.temp
-    global.fetch.mockImplementationOnce(() =>
-      Promise.resolve({
-        json: () => Promise.resolve({})
-      })
-    );
-
-    await expect(fetchData()).rejects.toThrow('Données de réponse manquantes');
+  afterEach(() => {
+    mock.reset();
   });
 
-  it('should handle network errors', async () => {
-    // Mock fetch pour simuler une erreur de réseau
-    global.fetch.mockImplementationOnce(() => Promise.reject(new Error('Network error')));
+  afterAll(() => {
+    mock.restore();
+  });
 
-    await expect(fetchData()).rejects.toThrow('Network error');
+  it('should fetch data successfully', async () => {
+    const mockData = {
+      weather: [{ description: 'clear sky' }],
+      main: { temp: 293.15 },
+      name: 'Rennes'
+    };
+
+    const apiKey = '1db3cf629ed34b77854175aa24be064d';
+    const city = 'Rennes';
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+    mock.onGet(url).reply(200, mockData);
+
+    const data = await fetchData();
+
+    expect(data).toHaveProperty('weather');
+    expect(data.weather[0]).toHaveProperty('description');
+    expect(data).toHaveProperty('main');
+    expect(data.main).toHaveProperty('temp');
+    expect(data).toHaveProperty('name', 'Rennes');
+  });
+
+  it('should throw an error if the fetch fails', async () => {
+    const apiKey = '1db3cf629ed34b77854175aa24be064d';
+    const city = 'Rennes';
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+    mock.onGet(url).reply(500);
+
+    await expect(fetchData()).rejects.toThrow('Request failed with status code 500');
   });
 });

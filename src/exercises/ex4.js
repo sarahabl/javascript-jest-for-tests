@@ -1,61 +1,44 @@
-const api_key = '08cb792ca8906ae401dad848ccb6410d';
-const latitude = -18.8792;
-const longitude = 47.5079;
-const api_url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${api_key}`;
+import axios from 'axios';
 
-const res = document.getElementById('paragraph');
-const eraser = document.getElementById('remove-paragraph-button');
+export const fetchData = async () => {
+  const apiKey = '1db3cf629ed34b77854175aa24be064d';
+  const city = 'Rennes';
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
 
-// La fonction fetchData
-async function fetchData() {
   try {
-    // on récupère la réponse
-    const response = await fetch(api_url);
-    // on récupère les données de la réponse
-    const jsonData = await response.json();
-    // on vérifie que les données sont utilisables
-    if (jsonData && jsonData.main && jsonData.main.temp !== undefined && jsonData.main.temp !== null) {
-      // on convertit en °C car elles sont données en K
-      const temperatureCelsius = jsonData.main.temp - 273.15;
-      return temperatureCelsius;
-    } else {
-      throw new Error('Données de réponse manquantes');
-    }
+    const response = await axios.get(url);
+    return response.data;
   } catch (error) {
-    console.error('Erreur à la récupération des données :', error);
+    console.error('Error fetching data:', error);
+    throw error;
   }
+};
+
+export const displayDataInDOM = async () => {
+  try {
+    const data = await fetchData();
+    const container = document.createElement('div');
+    container.id = 'weather-container';
+    container.textContent = `Weather: ${data.weather[0].description}, Temperature: ${(data.main.temp - 273.15).toFixed(2)}°C`;
+    document.getElementById('paragraph-container').appendChild(container);
+  } catch (error) {
+    console.error('Error displaying data:', error);
+  }
+};
+
+export const removeWeatherData = () => {
+  const container = document.getElementById('weather-container');
+  if (container) {
+    container.remove();
+  }
+};
+
+if (typeof document !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', displayDataInDOM);
+  document.addEventListener('DOMContentLoaded', () => {
+    const button = document.getElementById('remove-paragraph-button');
+    if (button) {
+      button.addEventListener('click', removeWeatherData);
+    }
+  });
 }
-
-// fonction pour afficher les données
-const displayData = () => {
-  fetchData()
-    // on attend qu'elles arrivent
-    .then((temperature) => {
-      if (temperature !== undefined) {
-        res.textContent = `La température actuelle à Tananarive est de ${temperature.toFixed(2)} °C.`;
-      } else {
-        console.error('La température est indéfinie.');
-      }
-    })
-    .catch((err) => console.error('Erreur lors de l\'affichage des données :', err));
-}
-
-function removeParagraph() {
-  res.textContent = '';
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  displayData();
-  eraser.addEventListener('click', removeParagraph);
-});
-
-module.exports = fetchData;
-
-/* EXAMPLE OF AN API REQUEST */
-
-/*
-let longitude = 44.83; // Bordeaux longitude
-let latitude = -0.57; // Bordeaux latitude
-let api_key = '891fcaaa0f613df11046ed15bd1a4607'; // Teacher's API Key
-let api_url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${api_key}`; // API URL
-*/
